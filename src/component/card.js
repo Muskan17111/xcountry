@@ -1,54 +1,63 @@
 import React, { useState, useEffect } from "react";
-import CardComponent from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import "./card.css";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 function Card() {
-  const [country, setCountry] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         const response = await axios.get("https://restcountries.com/v3.1/all");
-        setCountry(response.data);
+        setCountries(response.data);
       } catch (error) {
         console.error("Fetch Error:", error);
+        setError(error);
       }
     };
 
     fetchCountries();
   }, []);
 
-  
+  if (error) {
+    return <div>Error loading countries</div>;
+  }
+
   const RenderCard = ({ country }) => {
     return (
-
-      <Grid item className="card">
-        <CardComponent sx={{ maxWidth: 150, margin: "10px" }}>
-          <CardMedia
-            component="img"
-            height="100"
-            width="100"
-            margin="2px"
-            image={country.flags.png}
-            alt={country.flags.alt}
-          />
-          <CardContent>
-            <Box gutterBottom variant="body1" component="div">
-              {country.name.common}
-            </Box>
-          </CardContent>
-        </CardComponent>
+      <Grid sx={{margin:"20px"}}>
+      <Box
+        sx={{
+          maxWidth: 100,
+          maxHeight: 150,
+          display:"flex",
+          flexDirection:"column",
+          alignItems: "center",
+          alignContent:"center",
+          border: 1,
+          margin: "10px",
+          padding: "10px",
+        }}
+      >
+        <img
+          style={{ maxHeight: 100, maxWidth: 100, padding: "5px" }}
+          src={country.flags.png}
+          alt={country.flags.alt || country.name.common}
+        />
+          <Typography  variant="h8" >
+                  {country.name.common}
+          </Typography>
+        {/* <p>{country.name.common}</p> */}
+      </Box>
       </Grid>
     );
   };
 
   return (
     <Grid container spacing={2} className="card-wrapper">
-      {country.map((country, index) => ( 
+      {countries.map((country, index) => (
         <RenderCard key={index} country={country} />
       ))}
     </Grid>
@@ -56,5 +65,6 @@ function Card() {
 }
 
 export default Card;
+
 
 
