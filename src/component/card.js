@@ -30,25 +30,26 @@ function Card() {
       <Grid sx={{margin:"20px"}}>
       <Box
         sx={{
-          maxWidth: 100,
-          maxHeight: 150,
           display:"flex",
           flexDirection:"column",
           alignItems: "center",
           alignContent:"center",
           border: 1,
+          borderRadius:"8px",
           margin: "10px",
           padding: "10px",
+          width: 150,
+          height: 150,
         }}
       >
         <img
-          style={{ maxHeight: 100, maxWidth: 100, padding: "5px" }}
+          style={{ maxHeight: 100, maxWidth: 100, padding: "8px" }}
           src={country.flags.png}
           alt={country.flags.alt || country.name.common}
         />
-          <Typography  variant="h8" >
+          <h3>
                   {country.name.common}
-          </Typography>
+          </h3>
         {/* <p>{country.name.common}</p> */}
       </Box>
       </Grid>
@@ -56,7 +57,7 @@ function Card() {
   };
 
   return (
-    <Grid container spacing={2} className="card-wrapper">
+    <Grid container className="card-wrapper">
       {countries.map((country, index) => (
         <RenderCard key={index} country={country} />
       ))}
